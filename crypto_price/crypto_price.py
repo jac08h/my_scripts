@@ -8,9 +8,9 @@ def get_price(from_symbol, to_symbol):
     url = 'https://min-api.cryptocompare.com/data/price'
     params = {'fsym': from_symbol, 'tsyms':to_symbol}
     r = requests.get(url, params=params)
+    # TODO: error handling
 
-    output = '{}/{}: {}'.format(from_symbol, to_symbol, r.json()[to_symbol])
-    return output
+    return r.json()[to_symbol]
 
 
 def get_args():
@@ -20,17 +20,22 @@ def get_args():
     return parser.parse_args()
 
 
+def format_output(from_symbol, to_symbol, price):
+    output = '{}/{}: {}'.format(from_symbol, to_symbol, price)
+    return output
+
+
 def main():
     args = get_args()
 
-    to_symbols = args.to_symbols.split(',')
-    from_symbols = args.from_symbols.split(',')
+    to_symbols = [s.upper() for s in args.to_symbols.split(',')]
+    from_symbols = [s.upper() for s in args.from_symbols.split(',')]
 
     for fs in from_symbols:
-        print('*'*20)
         for ts in to_symbols:
             price = get_price(fs.upper(), ts.upper())
-            print(price)
+            output = format_output(fs, ts, price)
+            print(output)
 
 if __name__ == '__main__':
     main()
