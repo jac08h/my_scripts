@@ -1,6 +1,11 @@
 # my_scripts
  Collection of programs of various complexity I find useful.
  
+##### [alarm_clock](https://github.com/Jac08H/my_scripts/tree/master/alarm_clock)
+* Language: Python3
+* Description: Plays an alarm sound after specified time period.
+* Usage: `./alarm_clock.py [-s SECONDS] [-m MINUTES]`
+* Example: `./alarm_clock.py -s 0 -m 5`
 ##### [crypto_price](https://github.com/Jac08H/my_scripts/tree/master/crypto_price)
 * Language: Python3
 * Description: Gets price of cryptocurrencies using [Cryptocompare's](https://www.cryptocompare.com/) API. 
