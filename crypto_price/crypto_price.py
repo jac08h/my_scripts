@@ -15,8 +15,8 @@ def get_price(from_symbol, to_symbol):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('from_symbols', type=str, help='Separate symbols by coma if you want to use more than one.')
-    parser.add_argument('to_symbols', type=str, help='Separate symbols by coma if you want to use more than one.')
+    parser.add_argument('from_symbols', type=str, help='Separate symbols by comma if you want to use more than one.')
+    parser.add_argument('to_symbols', type=str, help='Separate symbols by comma if you want to use more than one.')
     return parser.parse_args()
 
 
