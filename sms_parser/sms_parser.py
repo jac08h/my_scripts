@@ -43,9 +43,9 @@ parser.add_argument("--sender", help="Name of the sender")
 parser.add_argument("--receiver", help="Name of the receiver")
 args = parser.parse_args()
 
-filename = args.filename if args.filename is not None else input("Enter filename")
-sender = args.sender if args.sender is not None else input("Enter sender's name")
-receiver = args.receiver if args.receiver is not None else input("Enter receiver's name")
+filename = args.filename if args.filename is not None else input("Enter filename: ")
+sender = args.sender if args.sender is not None else input("Enter sender's name: ")
+receiver = args.receiver if args.receiver is not None else input("Enter receiver's name: ")
 
 conv = parse_conversation(filename, sender, receiver)
 for msg in conv:
