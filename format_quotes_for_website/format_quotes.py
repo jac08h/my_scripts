@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 from os import linesep, makedirs
-from typing import Tuple
+from typing import Tuple, Optional
 
 website_path = Path("/home/jh/jac08h.github.io")
 website_quotes = Path(website_path, "book_quotes")
@@ -37,5 +37,22 @@ def create_markdown_text(author: str, title: str, quote: str) -> str:
     return header + linesep + linesep + quote
 
 
+# TODO: update only current year
+def generate_quotes_page(quotes_directory: Path) -> None:
+    for year_directory in sorted(quotes_directory.iterdir()):
+        if not year_directory.is_dir():
+            continue
+        year = year_directory.stem
+        year_file = Path(quotes_directory, year + ".md")
+        quote_paths = sorted([q for q in year_directory.iterdir() if q.is_file() and q.suffix == ".md"])
+        list_elements = []
+        for quote_path in quote_paths:
+            year, author, title = get_metadata(quote_path)
+            list_elements.append(f"* [{author} - {title}]({quote_path.stem})")
+
+        year_file.write_text(linesep.join(list_elements))
+
+
 if __name__ == '__main__':
     create_markdown_quotes(original_quotes, website_quotes)
+    generate_quotes_page(website_quotes)
