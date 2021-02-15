@@ -1,7 +1,9 @@
 from pathlib import Path
 import re
 from os import linesep, makedirs
+from shutil import rmtree
 from typing import Tuple, Optional
+from datetime import datetime as dt
 
 website_path = Path("/home/jh/jac08h.github.io")
 website_quotes = Path(website_path, "book_quotes")
@@ -37,13 +39,16 @@ def create_markdown_text(author: str, title: str, quote: str) -> str:
     return header + linesep + linesep + quote
 
 
-# TODO: update only current year
-def generate_quotes_page(quotes_directory: Path) -> None:
+def generate_quotes_page(quotes_directory: Path, update_only_current_year: Optional[bool] = True) -> None:
+    current_year = dt.now().year
     for year_directory in sorted(quotes_directory.iterdir()):
         if not year_directory.is_dir():
             continue
-        year = year_directory.stem
-        year_file = Path(quotes_directory, year + ".md")
+        year = int(year_directory.stem)
+        if update_only_current_year and current_year != year:
+            continue
+
+        year_file = Path(quotes_directory, str(year) + ".md")
         quote_paths = sorted([q for q in year_directory.iterdir() if q.is_file() and q.suffix == ".md"])
         list_elements = []
         for quote_path in quote_paths:
