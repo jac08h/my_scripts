@@ -12,9 +12,13 @@ original_quotes = Path("/home/jh/books/quotes")
 metadata_pattern = re.compile(r"(\d+)_(.+)__(.+)")
 
 
-def create_markdown_quotes(original_dir: Path, new_dir: Path) -> None:
+def create_markdown_quotes(original_dir: Path, new_dir: Path, dont_update_current_year: Optional[bool] = True) -> None:
+    current_year = dt.now().year
     for file in original_dir.iterdir():
         year, author, title = get_metadata(file)
+        if dont_update_current_year and year == current_year:
+            continue
+
         year_dir = Path(new_dir, str(year))
         makedirs(year_dir, exist_ok=True)
 
@@ -39,13 +43,13 @@ def create_markdown_text(author: str, title: str, quote: str) -> str:
     return header + linesep + linesep + quote
 
 
-def generate_quotes_page(quotes_directory: Path, update_only_current_year: Optional[bool] = True) -> None:
+def generate_quotes_page(quotes_directory: Path, dont_update_current_year: Optional[bool] = True) -> None:
     current_year = dt.now().year
     for year_directory in sorted(quotes_directory.iterdir()):
         if not year_directory.is_dir():
             continue
         year = int(year_directory.stem)
-        if update_only_current_year and current_year != year:
+        if dont_update_current_year and current_year == year:
             continue
 
         year_file = Path(quotes_directory, str(year) + ".md")
@@ -53,11 +57,12 @@ def generate_quotes_page(quotes_directory: Path, update_only_current_year: Optio
         list_elements = []
         for quote_path in quote_paths:
             year, author, title = get_metadata(quote_path)
-            list_elements.append(f"* [{author} - {title}]({quote_path.stem})")
+            list_elements.append(f"* [{author} - {title}](/book_quotes/{year}/{quote_path.stem})")
 
         year_file.write_text(linesep.join(list_elements))
 
 
 if __name__ == '__main__':
+    rmtree(website_quotes)
     create_markdown_quotes(original_quotes, website_quotes)
-    generate_quotes_page(website_quotes)
+    generate_quotes_page(website_quotes, True)

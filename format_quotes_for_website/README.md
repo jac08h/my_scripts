@@ -1,0 +1,18 @@
+# Format quotes for website
+
+A script to generate markdown-formatted documents from a plaintext quotes.
+
+Original file:
+*filename: 20_Doerr__All_the_light_we_cannot_see *
+```
+Werner thinks about the men in the sunflowers and a hundred others: each lay dead in his hut or truck or bunker, wearing the look of someone who had caught the tune of a familiar song. A crease between the eyes, a slackness to the mouth. A look that said: So soon? But doesn’t it play for everybody too soon?
+```
+
+New file:
+```
+## Doerr - All the light we cannot see
+
+Werner thinks about the men in the sunflowers and a hundred others: each lay dead in his hut or truck or bunker, wearing the look of someone who had caught the tune of a familiar song.
+A crease between the eyes, a slackness to the mouth.
+A look that said: So soon? But doesn’t it play for everybody too soon?
+```
