@@ -46,6 +46,7 @@ def create_markdown_text(author: str, title: str, year: int, quote: str) -> str:
 
 def generate_quotes_page(quotes_directory: Path, dont_update_current_year: Optional[bool] = True) -> None:
     current_year = dt.now().year
+    all_books = []
     for year_directory in sorted(quotes_directory.iterdir()):
         if not year_directory.is_dir():
             continue
@@ -55,12 +56,17 @@ def generate_quotes_page(quotes_directory: Path, dont_update_current_year: Optio
 
         year_file = Path(quotes_directory, str(year) + ".md")
         quote_paths = sorted([q for q in year_directory.iterdir() if q.is_file() and q.suffix == ".md"])
-        list_elements = []
+        books_in_year = []
         for quote_path in quote_paths:
             year, author, title = get_metadata(quote_path)
-            list_elements.append(f"* [{author} - {title}](/book_quotes/{year}/{quote_path.stem})")
+            books_in_year.append(f"* [{author} - {title}](/book_quotes/{year}/{quote_path.stem})")
 
-        year_file.write_text(linesep.join(list_elements))
+        all_books += books_in_year
+        year_file.write_text(linesep.join(books_in_year))
+
+    all_books.sort()
+    all_books_path = Path(quotes_directory, "all.md")
+    all_books_path.write_text(linesep.join(all_books))
 
 
 def generate_random_quote_page(quotes_directory: Path):
